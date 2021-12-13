@@ -12,8 +12,7 @@ import java.time.OffsetDateTime;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -152,6 +151,19 @@ class FilterArgumentResolverWebTest {
                 () -> assertThat(controller.getFilter(), hasProperty("exampleObjectTypeEnum", hasProperty("eq", equalTo(AmlObjectType.CONTROL))))
         );
     }
+
+    @Test
+    void resolveArgument_lookAtTheCast() {
+        String value = "CONTROL";
+
+        assertDoesNotThrow(() -> getMockMvc().perform(get("/exampleFiltering")
+                        .queryParam("exampleObjectTypeSimple.eq", value))
+                .andExpect(status().isNoContent())
+        );
+        AmlObjectType eq = controller.getFilter().getExampleObjectTypeSimple().getEq();
+        assertNotNull(eq);
+    }
+
 
     @Test
     void resolveArgument_amlObjectTypeSimple_ok() {
