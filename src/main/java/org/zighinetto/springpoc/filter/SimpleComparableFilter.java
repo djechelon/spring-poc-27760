@@ -1,5 +1,8 @@
 package org.zighinetto.springpoc.filter;
 
+import lombok.Data;
+
+@Data
 public class SimpleComparableFilter<T extends Comparable<? super T>> extends SimpleFilter<T> {
 
     /**
@@ -19,36 +22,6 @@ public class SimpleComparableFilter<T extends Comparable<? super T>> extends Sim
      */
     protected T lt;
 
-    public T getGte() {
-        return gte;
-    }
 
-    public void setGte(T gte) {
-        this.gte = gte;
-    }
-
-    public T getGt() {
-        return gt;
-    }
-
-    public void setGt(T gt) {
-        this.gt = gt;
-    }
-
-    public T getLte() {
-        return lte;
-    }
-
-    public void setLte(T lte) {
-        this.lte = lte;
-    }
-
-    public T getLt() {
-        return lt;
-    }
-
-    public void setLt(T lt) {
-        this.lt = lt;
-    }
 
 }

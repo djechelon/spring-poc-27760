@@ -1,5 +1,8 @@
 package org.zighinetto.springpoc.filter;
 
+import lombok.Data;
+
+@Data
 public class StringFilter extends SimpleComparableFilter<String> {
     /**
      * Requires the property to begin with the value
@@ -43,60 +46,5 @@ public class StringFilter extends SimpleComparableFilter<String> {
      */
     protected String containsIgnoreCase;
 
-    public String getStartsWith() {
-        return startsWith;
-    }
-
-    public void setStartsWith(String startsWith) {
-        this.startsWith = startsWith;
-    }
-
-    public String getStartsWithIgnoreCase() {
-        return startsWithIgnoreCase;
-    }
-
-    public void setStartsWithIgnoreCase(String startsWithIgnoreCase) {
-        this.startsWithIgnoreCase = startsWithIgnoreCase;
-    }
-
-    public String getEqIgnoreCase() {
-        return eqIgnoreCase;
-    }
-
-    public void setEqIgnoreCase(String eqIgnoreCase) {
-        this.eqIgnoreCase = eqIgnoreCase;
-    }
-
-    public String getEndsWith() {
-        return endsWith;
-    }
-
-    public void setEndsWith(String endsWith) {
-        this.endsWith = endsWith;
-    }
-
-    public String getEndsWithIgnoreCase() {
-        return endsWithIgnoreCase;
-    }
-
-    public void setEndsWithIgnoreCase(String endsWithIgnoreCase) {
-        this.endsWithIgnoreCase = endsWithIgnoreCase;
-    }
-
-    public String getContains() {
-        return contains;
-    }
-
-    public void setContains(String contains) {
-        this.contains = contains;
-    }
-
-    public String getContainsIgnoreCase() {
-        return containsIgnoreCase;
-    }
-
-    public void setContainsIgnoreCase(String containsIgnoreCase) {
-        this.containsIgnoreCase = containsIgnoreCase;
-    }
 
 }

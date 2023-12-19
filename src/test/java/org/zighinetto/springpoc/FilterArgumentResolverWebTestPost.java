@@ -9,14 +9,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrint;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.OffsetDateTime;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -24,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc(print = MockMvcPrint.LOG_DEBUG)
-class FilterArgumentResolverWebTest {
+class FilterArgumentResolverWebTestPost {
 
     private final FilteringArgumentResolverTestController controller;
 
@@ -40,8 +43,9 @@ class FilterArgumentResolverWebTest {
     void resolveArgument_dateTime() {
         String propertyStringValue = "1986-06-02T15:55:24Z";
         OffsetDateTime dateTime = OffsetDateTime.parse(propertyStringValue);
-        assertDoesNotThrow(() -> getMockMvc().perform(get("/exampleFiltering")
-                        .queryParam("exampleOffsetDateTime.eq", propertyStringValue))
+        assertDoesNotThrow(() -> getMockMvc().perform(post("/exampleFiltering")
+                        .content("{\"exampleOffsetDateTime\":{\"eq\":\"1986-06-02T15:55:24Z\"}}")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent())
         );
         assertAll(
@@ -57,8 +61,9 @@ class FilterArgumentResolverWebTest {
     @Test
     void resolveArgument_string() {
         String value = "foo";
-        assertDoesNotThrow(() -> getMockMvc().perform(get("/exampleFiltering")
-                        .queryParam("exampleString.eq", value))
+        assertDoesNotThrow(() -> getMockMvc().perform(post("/exampleFiltering")
+                        .content("{\"exampleString\":{\"eq\":\"foo\"}}")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent())
         );
 
@@ -75,8 +80,9 @@ class FilterArgumentResolverWebTest {
     void resolveArgument_stringArray() {
         String value1 = "foo";
         String value2 = "bar";
-        assertDoesNotThrow(() -> getMockMvc().perform(get("/exampleFiltering")
-                        .queryParam("exampleString.in", value1, value2))
+        assertDoesNotThrow(() -> getMockMvc().perform(post("/exampleFiltering")
+                        .content("{\"exampleString\":{\"in\":[\"foo\",\"bar\"]}}")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent())
         );
 
@@ -94,8 +100,9 @@ class FilterArgumentResolverWebTest {
     void resolveArgument_integer() {
         String value1 = "256";
 
-        assertDoesNotThrow(() -> getMockMvc().perform(get("/exampleFiltering")
-                        .queryParam("exampleInteger.eq", value1))
+        assertDoesNotThrow(() -> getMockMvc().perform(post("/exampleFiltering")
+                        .content("{\"exampleInteger\":{\"eq\":256}}")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent())
         );
 
@@ -115,8 +122,9 @@ class FilterArgumentResolverWebTest {
         String value1 = "256";
         String value2 = "-512";
 
-        assertDoesNotThrow(() -> getMockMvc().perform(get("/exampleFiltering")
-                        .queryParam("exampleInteger.in", value1, value2))
+        assertDoesNotThrow(() -> getMockMvc().perform(post("/exampleFiltering")
+                        .content("{\"exampleInteger\":{\"in\":[256,-512]}}")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent())
         );
 
@@ -133,8 +141,9 @@ class FilterArgumentResolverWebTest {
     void resolveArgument_amlObjectTypeEnum_ok() {
         String value = "CONTROL";
 
-        assertDoesNotThrow(() -> getMockMvc().perform(get("/exampleFiltering")
-                        .queryParam("exampleObjectType.eq", value))
+        assertDoesNotThrow(() -> getMockMvc().perform(post("/exampleFiltering")
+                        .content("{\"exampleObjectType\":{\"eq\":\"CONTROL\"}}")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent())
         );
 
@@ -142,7 +151,6 @@ class FilterArgumentResolverWebTest {
                 () -> assertThat(controller.getFilter(), is(notNullValue())),
                 () -> assertThat(controller.getFilter(), is(instanceOf(ExampleTestFilter.class))),
                 () -> assertThat(controller.getFilter(), hasProperty("exampleObjectType", is(notNullValue()))),
-                () -> assertThat(controller.getFilter(), hasProperty("exampleObjectType", hasProperty("eq", instanceOf(AmlObjectType.class)))),
                 () -> assertThat(controller.getFilter(), hasProperty("exampleObjectType", hasProperty("eq", equalTo(AmlObjectType.CONTROL))))
         );
     }
@@ -150,8 +158,9 @@ class FilterArgumentResolverWebTest {
 
     @Test
     void resolveArgument_isNull() {
-        assertDoesNotThrow(() -> getMockMvc().perform(get("/exampleFiltering")
-                        .queryParam("exampleString.isNull", "true"))
+        assertDoesNotThrow(() -> getMockMvc().perform(post("/exampleFiltering")
+                        .content("{\"exampleString\":{\"isNull\":true}}")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent())
         );
 
@@ -166,8 +175,9 @@ class FilterArgumentResolverWebTest {
 
     @Test
     void resolveArgument_isNotNull() {
-        assertDoesNotThrow(() -> getMockMvc().perform(get("/exampleFiltering")
-                        .queryParam("exampleString.isNull", "false"))
+        assertDoesNotThrow(() -> getMockMvc().perform(post("/exampleFiltering")
+                        .content("{\"exampleString\":{\"isNull\":false}}")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent())
         );
         assertAll(

@@ -1,5 +1,8 @@
 package org.zighinetto.springpoc.filter;
 
+import lombok.Data;
+
+@Data
 public class SimpleFilter<T> {
 
     /**
@@ -29,43 +32,5 @@ public class SimpleFilter<T> {
      */
     protected Boolean isNull;
 
-    public T getEq() {
-        return eq;
-    }
 
-    public void setEq(T eq) {
-        this.eq = eq;
-    }
-
-    public T getNe() {
-        return ne;
-    }
-
-    public void setNe(T ne) {
-        this.ne = ne;
-    }
-
-    public T[] getIn() {
-        return in;
-    }
-
-    public void setIn(T[] in) {
-        this.in = in;
-    }
-
-    public T[] getNotIn() {
-        return notIn;
-    }
-
-    public void setNotIn(T[] notIn) {
-        this.notIn = notIn;
-    }
-
-    public Boolean getIsNull() {
-        return isNull;
-    }
-
-    public void setIsNull(Boolean aNull) {
-        isNull = aNull;
-    }
 }

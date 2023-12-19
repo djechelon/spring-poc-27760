@@ -25,4 +25,11 @@ public class FilteringArgumentResolverTestController {
     public void handleExampleTestFilter(@ModelAttribute("filter") ExampleTestFilter filter) {
         this.filter = filter;
     }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void handleExampleTestFilterPost(@RequestBody ExampleTestFilter filter) {
+        this.filter = filter;
+    }
+
 }
